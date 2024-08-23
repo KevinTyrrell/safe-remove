@@ -24,7 +24,7 @@
 # Note: Items are only purged upon this program being called
 EXPIRATION_WINDOW_DAYS=30
 # When enabled (1), prompts & warns the user which files will be deleted
-SAFE_MODE=1
+SAFE_MODE=0
 
 # ======================================
 # End of user-configurable variables
@@ -40,6 +40,7 @@ Removes files through 'rm' once they have expired.
 
 Options:
   -h, --help    Show this help message and exit
+  -n, --no-op	Run without performing an operation
 
 Arguments:
   file1 file2 ...  Files to be recycled
@@ -51,11 +52,16 @@ Author: Kevin Tyrrell
 EOF
 }
 
+NO_OP=false  # Optional flag to run program without an operation taking place.
+
 check_params() {
 	for arg; do
-		local lc=$(echo "$arg" | tr '[:upper:]' '[:lower:]')
+		# Switched to 'printf' instead of echo to avoid '-n' recognized as newline.
+		local lc=$(printf '%s' "$arg" | tr '[:upper:]' '[:lower:]')
 		if [ "$lc" = "--help" ] || [ "$lc" = "-h" ]; then
-			show_help; exit 0; fi;
+			show_help; exit 0; fi
+		if [ "$lc" = "--no-op" ] || [ "$lc" = "-n" ]; then
+			NO_OP=true; fi  # Perform no operation this runtime.
 	done
 }
 
@@ -107,7 +113,7 @@ clean_db() {
 	declare -A files
 	shopt -s dotglob  # Enable iteration of hidden files
 	for file in "$recycle_path"/*; do
-		local base="$(basename "$file")"  
+		local base="$(basename "$file")"
 		if [[ ! -v files["$base"] ]]; then  # Should always be true
 			files["$base"]=1; fi  # Set, value is always 1
 	done
@@ -117,8 +123,9 @@ clean_db() {
 		# Instead of checking the directory itself (case insensitive),
 		# check the associative array if file exists (case sensitive).
 		if [[ ! -v files["$base"] ]]; then
-			# If file no longer exists, remove the stale entry
-			unset "db_ts_by_file[$base]"
+			# If file no longer exists, remove the stale entry.
+			# Note: omitting character \" causes files with apostrophe to fail to be unset.
+			unset "db_ts_by_file[\"$base\"]"
 		fi
 	done
 }
@@ -184,7 +191,7 @@ check_safety() {
 erase_file() {
 	local base=$1
 	local file="$recycle_path/$base"
-	rm --preserve-root -r -i "$file"
+	rm --preserve-root -r "$file"
 	if [ ! -e "$file" ]; then
 		unset "db_ts_by_file[$base]"  # Remove file from database
 	else log 1 "deletion failed: %s" "$file"; fi
@@ -257,7 +264,8 @@ main() {
 	load_db
 	
 	purge
-	put "$1"
+	if ! $NO_OP; then  # Perform no operation if flag is set
+		put "$1"; fi  # TODO: Allow for varargs
 	save_db
 }
 
