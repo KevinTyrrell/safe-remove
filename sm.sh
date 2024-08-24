@@ -30,8 +30,11 @@ SAFE_MODE=0
 # End of user-configurable variables
 # ======================================
 
+SM_VERSION_NUMBER="safe-remove v1.0.0"
+
 show_help() {
   cat <<EOF
+       ${SM_VERSION_NUMBER}
 Usage: $(basename "$0") [options] [arguments]
 
 A safer alternative to 'rm' in Bash.
@@ -39,8 +42,9 @@ Moves files to your Recycle Bin (/recycle) in \$HOME.
 Removes files through 'rm' once they have expired.
 
 Options:
-  -h, --help    Show this help message and exit
-  -n, --no-op	Runs without performing operations on the parameters
+  -h, --help    	Show this help message and exit
+  -n, --no-op		Runs without performing operations on the parameters
+  -v, --version		Displays the version number of the program
 
 Arguments:
   file1 file2 ...  Files to be recycled
@@ -60,6 +64,8 @@ check_params() {
 		local lc=$(printf '%s' "$arg" | tr '[:upper:]' '[:lower:]')
 		if [ "$lc" = "--help" ] || [ "$lc" = "-h" ]; then
 			show_help; exit 0; fi
+		if [ "$lc" = "--version" ] || [ "$lc" = "-v" ]; then
+			log 0 "%s" "$SM_VERSION_NUMBER"; exit 0; fi
 		if [ "$lc" = "--no-op" ] || [ "$lc" = "-n" ]; then
 			NO_OP=true; fi  # Perform no operation this runtime.
 	done

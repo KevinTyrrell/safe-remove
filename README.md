@@ -17,6 +17,7 @@
 |:-|:-|:-|
 |Help|--help, -h|Prints help and usage text for safe-remove|
 |No-OP|--no-op, -n|Runs without performing operations on the parameters|
+|Version|--version, -v|Displays the version number of the program|
 
 * ----- **Stale File Threshold:**
 
