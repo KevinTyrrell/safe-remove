@@ -32,16 +32,33 @@ By default, files are deleted from `/recycle` without user approval. To modify t
 #### Linux
 
 ```shell
-curl -o /usr/local/bin/your-script.sh https://github.com/KevinTyrrell/safe-remove/releases/sm
-chmod +x /usr/local/bin/sm  # Ensure /usr/local/bin is defined in your PATH.
+cd /usr/local/bin
+
+LOCATION=$(curl -s https://api.github.com/repos/KevinTyrrell/safe-remove/releases/latest \
+| grep "zipball_url" \
+| awk '{ print $2 }' \
+| sed 's/,$//'       \
+| sed 's/"//g' )     \
+; curl -L -o sm $LOCATION
+
+chmod +x sm
 ```
 
 #### POSIX-compatible (Windows)
 
 ```shell
-mkdir -p ~/bin # Add ~/bin to your environmental variable PATH afterwards
-curl -o ~/bin/sm https://github.com/yourusername/yourrepo/raw/main/sm
-chmod +x ~/bin/sm
+mkdir -p ~/bin && cd ~/bin
+
+# Add ~/bin to your environmental variable PATH
+
+LOCATION=$(curl -s https://api.github.com/repos/KevinTyrrell/safe-remove/releases/latest \
+| grep "zipball_url" \
+| awk '{ print $2 }' \
+| sed 's/,$//'       \
+| sed 's/"//g' )     \
+; curl -L -o sm $LOCATION
+
+chmod +x sm
 ```
 
 ## 📃 License
