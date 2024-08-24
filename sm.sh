@@ -40,7 +40,7 @@ Removes files through 'rm' once they have expired.
 
 Options:
   -h, --help    Show this help message and exit
-  -n, --no-op	Run without performing an operation
+  -n, --no-op	Runs without performing operations on the parameters
 
 Arguments:
   file1 file2 ...  Files to be recycled
