@@ -32,16 +32,7 @@ By default, files are deleted from `/recycle` without user approval. To modify t
 #### Linux
 
 ```shell
-cd /usr/local/bin
-
-LOCATION=$(curl -s https://api.github.com/repos/KevinTyrrell/safe-remove/releases/latest \
-| grep "zipball_url" \
-| awk '{ print $2 }' \
-| sed 's/,$//'       \
-| sed 's/"//g' )     \
-; curl -L -o sm $LOCATION
-
-chmod +x sm
+(cd /tmp && SM_URL=$(curl -fsSL https://api.github.com/repos/KevinTyrrell/safe-remove/releases/latest | grep "zipball_url" | awk '{ print $2 }' | sed 's/,$//' | sed 's/"//g') && curl -fsSL -o sm.zip "$SM_URL" && unzip -q sm.zip -d sm && sudo install -m 755 sm/*/sm.sh /usr/local/bin/sm && rm -rf sm.zip sm)
 ```
 
 #### POSIX-compatible (Windows)
