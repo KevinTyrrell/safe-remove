@@ -22,9 +22,11 @@
 
 # Number of days before items are purged from the recycle bin
 # Note: Items are only purged upon this program being called
-EXPIRATION_WINDOW_DAYS=30
+EXPIRATION_WINDOW_DAYS=14
 # When enabled (1), prompts & warns the user which files will be deleted
 SAFE_MODE=0
+# Absolute path to the recycle folder (hidden recommended)
+RECYCLE_DIR_PATH="$HOME/.recycle"
 
 # ======================================
 # End of user-configurable variables
@@ -85,7 +87,7 @@ log() {
 # Ensures Recycle Bin is instantiated and path is valid
 load_recycle() {
 	local home="$(eval echo ~)"
-	local recycle="$home/recycle"
+	local recycle="$RECYCLE_DIR_PATH"
 	if [ ! -e "$recycle" ]; then
 		log 0 "Recycle DNE -- Creating: %s" "$recycle/"
 		mkdir "$recycle"
