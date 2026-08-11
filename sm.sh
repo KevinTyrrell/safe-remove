@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# A safer alternative to 'rm' in Bash
+# A safer alternative to 'rm' in Bash. Moves files to a recycle folder, purging stale contents on subsequent runs.
 # Copyright (C) 2024  Kevin Tyrrell
 #
 # This program is free software: you can redistribute it and/or modify
