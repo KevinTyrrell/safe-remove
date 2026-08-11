@@ -20,19 +20,19 @@
 # User-configurable variables
 # ======================================
 
-# Number of days before items are purged from the recycle bin
-# Note: Items are only purged upon this program being called
-EXPIRATION_WINDOW_DAYS=14
-# When enabled (1), prompts & warns the user which files will be deleted
-SAFE_MODE=0
 # Absolute path to the recycle folder (hidden recommended)
 RECYCLE_DIR_PATH="$HOME/.recycle"
+# Number of days before items are purged from the recycle bin
+# Note: Items are only purged upon this program being called
+STALE_THRESH_DAYS=30
+# When enabled (1), prompts & warns the user which files will be deleted
+SAFE_MODE=1
 
 # ======================================
 # End of user-configurable variables
 # ======================================
 
-SM_VERSION_NUMBER="safe-remove v1.0.0"
+SM_VERSION_NUMBER="safe-remove v1.1.0"
 
 show_help() {
   cat <<EOF
@@ -265,7 +265,7 @@ put() {
 
 main() {
 	ts_now=$(date +%s)  # Unix Timestamps, now & max limit for purge
-	ts_expire=$((ts_now - $EXPIRATION_WINDOW_DAYS * 24 * 60 * 60))
+	ts_expire=$((ts_now - $STALE_THRESH_DAYS * 24 * 60 * 60))
 
 	check_params "$@"
 	load_recycle
