@@ -16,20 +16,22 @@
 |Command|Syntax|Description|
 |:-|:-|:-|
 |Help|--help, -h|Prints help and usage text for safe-remove|
-|No-OP|--no-op, -n|Runs without performing operations on the parameters|
+|No-Op|--no-op, -n|Runs without performing operations on the parameters|
 |Version|--version, -v|Displays the version number of the program|
 
-* **Recycle Bin Location:**
+## ⚙️ Configuration
 
-By default, the recycle is created & located in `$HOME/.recycle`. To change this location, locate `RECYCLE_DIR_PATH` [[here]](https://github.com/KevinTyrrell/safe-remove/blob/766d9643e7f8578f181cdf475531ba6ba997fe41/sm.sh#L24) in `sm.sh`. The housing directory must exist and be writable.
+The options below are set inside the installed script itself. To edit them, open `sm` in your editor of choice:
 
-* **Stale File Threshold:**
+```shell
+sudo vim /usr/local/bin/sm
+```
 
-By default, files are considered stale after `30` days after being present in the recycle. To adjust this threshold, locate `STALE_THRESH_DAYS` [[here]]https://github.com/KevinTyrrell/safe-remove/blob/766d9643e7f8578f181cdf475531ba6ba997fe41/sm.sh#L27). The threshold value is in days and must be positive.
-
-* **Safe Mode:**
-
-By default, stale files are deleted only with user approval, by prompt for deletion. To toggle this behavior, locate `SAFE_MODE` [[here]](https://github.com/KevinTyrrell/safe-remove/blob/766d9643e7f8578f181cdf475531ba6ba997fe41/sm.sh#L29). Set to value `1` to require approval per-file, or `0` for silent deletion.
+|Option|Variable|Default|Description|
+|:-|:-|:-|:-|
+|Recycle Location|[`RECYCLE_DIR_PATH`](https://github.com/KevinTyrrell/safe-remove/blob/766d9643e7f8578f181cdf475531ba6ba997fe41/sm.sh#L24)|`$HOME/.recycle`|Directory where removed files are stored. Must already exist and be writable.|
+|Stale File Threshold|[`STALE_THRESH_DAYS`](https://github.com/KevinTyrrell/safe-remove/blob/766d9643e7f8578f181cdf475531ba6ba997fe41/sm.sh#L27)|`30`|Number of days before a file is considered stale. Must be a positive integer.|
+|Safe Mode Toggle|[`SAFE_MODE`](https://github.com/KevinTyrrell/safe-remove/blob/766d9643e7f8578f181cdf475531ba6ba997fe41/sm.sh#L29)|`1`|Set to `1` to prompt for approval before deleting stale files, or `0` to delete silently.|
 
 ## 📝 Installation
 
