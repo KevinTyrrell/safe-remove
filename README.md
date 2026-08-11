@@ -21,15 +21,15 @@
 
 * **Recycle Bin Location:**
 
-By default, the recycle is created & located in `$HOME/.recycle`. To change this location, locate `RECYCLE_DIR_PATH` [[here]](https://github.com/KevinTyrrell/safe-remove/blob/7af52e503544b2c43981104a16d523cda54fcc8b/sm.sh#L24) in `sm.sh`. The housing directory must exist and be writable.
+By default, the recycle is created & located in `$HOME/.recycle`. To change this location, locate `RECYCLE_DIR_PATH` [[here]](https://github.com/KevinTyrrell/safe-remove/blob/766d9643e7f8578f181cdf475531ba6ba997fe41/sm.sh#L24) in `sm.sh`. The housing directory must exist and be writable.
 
 * **Stale File Threshold:**
 
-By default, files are considered stale after `30` days after being present in the recycle. To adjust this threshold, locate `STALE_THRESH_DAYS` [[here]](https://github.com/KevinTyrrell/safe-remove/blob/7af52e503544b2c43981104a16d523cda54fcc8b/sm.sh#L27). The threshold value is in days and must be positive.
+By default, files are considered stale after `30` days after being present in the recycle. To adjust this threshold, locate `STALE_THRESH_DAYS` [[here]]https://github.com/KevinTyrrell/safe-remove/blob/766d9643e7f8578f181cdf475531ba6ba997fe41/sm.sh#L27). The threshold value is in days and must be positive.
 
 * **Safe Mode:**
 
-By default, stale files are deleted only with user approval, by prompt for deletion. To toggle this behavior, locate `SAFE_MODE` [[here]](https://github.com/KevinTyrrell/safe-remove/blob/7af52e503544b2c43981104a16d523cda54fcc8b/sm.sh#L29). Set to value `1` to require approval per-file, or `0` for silent deletion.
+By default, stale files are deleted only with user approval, by prompt for deletion. To toggle this behavior, locate `SAFE_MODE` [[here]](https://github.com/KevinTyrrell/safe-remove/blob/766d9643e7f8578f181cdf475531ba6ba997fe41/sm.sh#L29). Set to value `1` to require approval per-file, or `0` for silent deletion.
 
 ## 📝 Installation
 
