@@ -199,7 +199,7 @@ check_safety() {
 erase_file() {
 	local base=$1
 	local file="$recycle_path/$base"
-	rm --preserve-root -r "$file"
+	rm --preserve-root -rf "$file"
 	if [ ! -e "$file" ]; then
 		unset "db_ts_by_file[$base]"  # Remove file from database
 	else log 1 "deletion failed: %s" "$file"; fi
