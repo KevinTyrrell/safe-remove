@@ -44,7 +44,6 @@ Moves files to a recycle folder, purging stale contents on subsequent runs.
 
 Options:
   -h, --help    	Show this help message and exit
-  -n, --no-op		Runs without performing operations on the parameters
   -v, --version		Displays the version number of the program
 
 Arguments:
@@ -57,7 +56,6 @@ Author: Kevin Tyrrell
 EOF
 }
 
-NO_OP=false  # Optional flag to run program without an operation taking place
 FILE_ARGS=()  # Positional arguments that are actual files, not flags
 
 check_params() {
@@ -68,8 +66,6 @@ check_params() {
 			show_help; exit 0; fi
 		if [ "$lc" = "--version" ] || [ "$lc" = "-v" ]; then
 			log 0 "%s" "$SM_VERSION_NUMBER"; exit 0; fi
-		if [ "$lc" = "--no-op" ] || [ "$lc" = "-n" ]; then
-			NO_OP=true; fi  # Perform no operation this runtime
 		FILE_ARGS+=("$arg")  # Not a recognized flag, treat as a file
 	done
 }
@@ -273,11 +269,9 @@ main() {
 	load_db
 	
 	purge
-	if ! $NO_OP; then  # Perform no operation if flag is set
-		for file in "${FILE_ARGS[@]}"; do
-			put "$file"
-		done
-	fi
+	for file in "${FILE_ARGS[@]}"; do
+		put "$file"
+	done
 	save_db
 }
 

@@ -7,16 +7,15 @@
 
 ## ℹ️ About
 
-**safe-remove** or `sm` is a Shell script designed to emulate the `rm` (remove) command, but in a safer manner akin to the Recycle Bin from Windows. Files targeted by *safe-remove* are placed into your 'Recycle Bin' folder (by default, `~/.recycle` in `\$HOME`). Files are removed through `rm` once they exceed a certain threshold and become stale (by default, 30 days). Duplicate named files are renamed accordingly with suffixes `(1)`, `(2)`, etc.
+**safe-remove** (`sm`) is designed as a safer alternative to `rm`. Similar to the *Recycle Bin* on Windows, targeted files are moved to a Recycle folder (`~/.recycle` by default). Said files are kept — collision-safe, auto-renamed — until they age and become stale (`30` days by default). Stale files are deleted through `rm` (with a `SAFE_MODE` prompt by default) each `sm` call.
 
 
-#### The Recycle Bin is only cleaned during subsequent `sm` calls, if applicable. One can automate this process by including `sm --no-op &` in their `.bashrc` or `.bash_profile` or other CLI start-up files.
+#### The Recycle Bin is only cleaned during subsequent `sm` calls, if applicable. One can automate this process by including `sm &` (no arguments) in their `.bashrc`/`.bash_profile` or other terminal start-up files.
 
 ## 📑 Usage
 |Command|Syntax|Description|
 |:-|:-|:-|
 |Help|--help, -h|Prints help and usage text for safe-remove|
-|No-Op|--no-op, -n|Runs without performing operations on the parameters|
 |Version|--version, -v|Displays the version number of the program|
 
 ## ⚙️ Configuration
