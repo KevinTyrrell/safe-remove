@@ -40,8 +40,7 @@ show_help() {
 Usage: $(basename "$0") [options] [arguments]
 
 A safer alternative to 'rm' in Bash.
-Moves files to your Recycle Bin (/recycle) in \$HOME.
-Removes files through 'rm' once they have expired.
+Moves files to a recycle folder, purging stale contents on subsequent runs.
 
 Options:
   -h, --help    	Show this help message and exit
@@ -58,18 +57,20 @@ Author: Kevin Tyrrell
 EOF
 }
 
-NO_OP=false  # Optional flag to run program without an operation taking place.
+NO_OP=false  # Optional flag to run program without an operation taking place
+FILE_ARGS=()  # Positional arguments that are actual files, not flags
 
 check_params() {
 	for arg; do
-		# Switched to 'printf' instead of echo to avoid '-n' recognized as newline.
+		# Switched to 'printf' instead of echo to avoid '-n' recognized as newline
 		local lc=$(printf '%s' "$arg" | tr '[:upper:]' '[:lower:]')
 		if [ "$lc" = "--help" ] || [ "$lc" = "-h" ]; then
 			show_help; exit 0; fi
 		if [ "$lc" = "--version" ] || [ "$lc" = "-v" ]; then
 			log 0 "%s" "$SM_VERSION_NUMBER"; exit 0; fi
 		if [ "$lc" = "--no-op" ] || [ "$lc" = "-n" ]; then
-			NO_OP=true; fi  # Perform no operation this runtime.
+			NO_OP=true; fi  # Perform no operation this runtime
+		FILE_ARGS+=("$arg")  # Not a recognized flag, treat as a file
 	done
 }
 
@@ -273,7 +274,10 @@ main() {
 	
 	purge
 	if ! $NO_OP; then  # Perform no operation if flag is set
-		put "$1"; fi  # TODO: Allow for varargs
+		for file in "${FILE_ARGS[@]}"; do
+			put "$file"
+		done
+	fi
 	save_db
 }
 
