@@ -32,7 +32,7 @@ SAFE_MODE=1
 # End of user-configurable variables
 # ======================================
 
-SM_VERSION_NUMBER="safe-remove v1.1.0"
+SM_VERSION_NUMBER="safe-remove v1.2.0"
 
 show_help() {
   cat <<EOF
