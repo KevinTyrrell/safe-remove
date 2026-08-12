@@ -43,6 +43,7 @@ A safer alternative to 'rm' in Bash.
 Moves files to a recycle folder, purging stale contents on subsequent runs.
 
 Options:
+  -i, --interactive	Prompt the user before placing files into the recycle
   -h, --help    	Show this help message and exit
   -v, --version		Displays the version number of the program
 
@@ -57,6 +58,7 @@ EOF
 }
 
 FILE_ARGS=()  # Positional arguments that are actual files, not flags
+INTERACTIVE_MODE=0  # Prompts the user for consent before recycling, when toggled
 
 check_params() {
 	for arg; do
@@ -66,7 +68,13 @@ check_params() {
 			show_help; exit 0; fi
 		if [ "$lc" = "--version" ] || [ "$lc" = "-v" ]; then
 			log 0 "%s" "$SM_VERSION_NUMBER"; exit 0; fi
-		FILE_ARGS+=("$arg")  # Not a recognized flag, treat as a file
+		if [ "$lc" = "--interactive" ] || [ "$lc" = "-i" ]; then
+			INTERACTIVE_MODE=1
+		elif [ -e "$arg" ]; then
+			FILE_ARGS+=("$arg")  # Not a recognized flag, treat as a file
+		else
+			log 1 "file does not exist: %s" "$arg"
+		fi
 	done
 }
 
@@ -260,6 +268,20 @@ put() {
 	else log 1 "file path is invalid: %s" "$file_path"; fi
 }
 
+# Prompts the user for consent before recycling, when interactive mode is enabled
+prompt_recycle() {
+	if (( INTERACTIVE_MODE )) && [ "${#FILE_ARGS[@]}" -gt 0 ]; then
+		for file in "${FILE_ARGS[@]}"; do
+			log 0 "file staged for recycling: %s" "$file"
+		done
+
+		read -p ">>> Move all of the above files to the recycle? (y/n): " confirm
+		if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
+			FILE_ARGS=()  # User canceled the request -- clear file list to protect them
+		fi
+	fi
+}
+
 main() {
 	ts_now=$(date +%s)  # Unix Timestamps, now & max limit for purge
 	ts_expire=$((ts_now - $STALE_THRESH_DAYS * 24 * 60 * 60))
@@ -269,6 +291,7 @@ main() {
 	load_db
 	
 	purge
+	prompt_recycle
 	for file in "${FILE_ARGS[@]}"; do
 		put "$file"
 	done

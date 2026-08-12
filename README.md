@@ -15,6 +15,7 @@
 ## 📑 Usage
 |Command|Syntax|Description|
 |:-|:-|:-|
+|Interactive|--interactive, -i|Prompt the user before placing files into the recycle|
 |Help|--help, -h|Prints help and usage text for safe-remove|
 |Version|--version, -v|Displays the version number of the program|
 
